@@ -1,10 +1,11 @@
+import Sentry from '@sentry/node';
 import axios from 'axios';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import morgan from 'morgan';
-import './sentry.config';
+import './sentry.config'; // must be at the top
 import { setupSwagger } from './swagger.config';
 
 //#region App Setup
@@ -29,8 +30,9 @@ setupSwagger(app, BASE_URL);
 //#endregion App Setup
 
 //#region Code here
-console.log('Hello world');
-//#endregion
+app.get('/throw', async (req: Request, res: Response) => {
+  throw new Error('Test error');
+}); //#endregion
 
 //#region Server Setup
 
@@ -98,6 +100,9 @@ app.use((req: Request, res: Response) => {
     message: 'API route does not exist',
   });
 });
+
+// The error handler must be registered before any other error middleware and after all controllers
+Sentry.setupExpressErrorHandler(app);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   // throw Error('This is a sample error');

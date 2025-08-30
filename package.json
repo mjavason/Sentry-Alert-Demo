@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sentry/node": "^9.43.0",
+    "@sentry/node": "^9.46.0",
     "@types/cors": "^2.8.17",
     "@types/morgan": "^1.9.9",
     "@types/swagger-jsdoc": "^6.0.4",
